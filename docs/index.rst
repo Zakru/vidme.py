@@ -2,14 +2,13 @@
 vidme.py Documentation
 ======================
 
-.. contents::
-
-Introduction
-------------
-
 .. toctree::
    
    more
+     Subsection
+
+Introduction
+------------
 
 Welcome to the vidme.py documentation!
 
