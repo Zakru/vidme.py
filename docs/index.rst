@@ -4,8 +4,8 @@ vidme.py Documentation
 
 .. toctree::
    
-   more
-     Subsection
+   api
+     client
 
 Introduction
 ------------
