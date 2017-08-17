@@ -1,20 +1,20 @@
-======================
-vidme.py Documentation
-======================
+.. vidme.py documentation master file, created by
+   sphinx-quickstart on Thu Aug 17 23:07:11 2017.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to vidme.py's documentation!
+====================================
 
 .. toctree::
-   
-   api
-     client
+   :maxdepth: 2
+   :caption: Contents:
 
-Introduction
-------------
 
-Welcome to the vidme.py documentation!
 
-Vidme.py is an API wrapper for the Vidme API, written in Python.
+Indices and tables
+==================
 
-Another Section
----------------
-
-This is pointless information.
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
