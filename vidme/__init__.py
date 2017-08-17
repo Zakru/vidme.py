@@ -1,4 +1,8 @@
-import gateway
-from client import Client
+"""
+Vidme API Wrapper
+"""
 
-__name__ = "vidme.py"
+__version__ = "0.1.0.dev1"
+
+from .client import Client
+from . import users

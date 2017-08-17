@@ -22,29 +22,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from setuptools import setup
-import setuptools
+from . import gateway
+import collections
 
-long = '''A python wrapper for the Vidme API
+"""All user information should be gotten through this submodule."""
 
-Currently at the very start'''
+user_cache = {}
 
-setup(name="vidme.py",
-	  version="0.1.0.dev1",
-	  description="A python wrapper for the Vidme API",
-	  long_description=long,
-	  url="https://github.com/Zakru/vidme.py",
-	  author="Zakru",
-	  author_email="sakari.leukkunen@gmail.com",
-	  license="MIT",
-	  classifiers=[
-	      "Development Status :: 1 - Planning",
-		  "Intended Audience :: Developers",
-		  "Topic :: Software Development",
-		  "License :: OSI Approved :: MIT License",
-		  "Programming Language :: Python :: 3"
-	  ],
-	  keywords="vidme api wrapper",
-	  packages=setuptools.find_packages(),
-	  install_requires=["requests"],
-	  python_requires=">=3")
+def get_user_info(user_id):
+	if user_id in user_cache:
+		return user_cache[user_id]
+	else:
+		return fetch_user_info(user_id)
+
+def update_user_info(user_id, info):
+	if user_id in user_cache:
+		user_info_c = collections.Counter(user_cache[user_id])
+		user_info_c.update(info)
+	else:
+		user_cache[user_id] = info
+
+def fetch_user_info(user_id):
+	res = gateway.get("user/{0}", url_args=[user_id])
+	
+	if res.json()["status"]:
+		update_user_info(user_id, res.json()["user"])
+		return res.json()["user"]

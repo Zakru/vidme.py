@@ -22,29 +22,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from setuptools import setup
-import setuptools
+import requests
 
-long = '''A python wrapper for the Vidme API
+url_prefix = "https://api.vid.me/"
 
-Currently at the very start'''
+def get(url, *args, **kwargs):
+	url_f = url
+	if "url_args" in kwargs:
+		url_f = url.format(*(kwargs["url_args"]))
+	
+	kwargs.pop("url_args", None)
+	return requests.get(url_prefix + url_f, *args, **kwargs)
 
-setup(name="vidme.py",
-	  version="0.1.0.dev1",
-	  description="A python wrapper for the Vidme API",
-	  long_description=long,
-	  url="https://github.com/Zakru/vidme.py",
-	  author="Zakru",
-	  author_email="sakari.leukkunen@gmail.com",
-	  license="MIT",
-	  classifiers=[
-	      "Development Status :: 1 - Planning",
-		  "Intended Audience :: Developers",
-		  "Topic :: Software Development",
-		  "License :: OSI Approved :: MIT License",
-		  "Programming Language :: Python :: 3"
-	  ],
-	  keywords="vidme api wrapper",
-	  packages=setuptools.find_packages(),
-	  install_requires=["requests"],
-	  python_requires=">=3")
+def post(url, *args, **kwargs):
+	url_f = url
+	if "url_args" in kwargs:
+		url_f = url.format(*(kwargs["url_args"]))
+	
+	kwargs.pop("url_args", None)
+	return requests.post(url_prefix + url_f, *args, **kwargs)
