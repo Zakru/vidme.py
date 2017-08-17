@@ -7,6 +7,10 @@ vidme.py Documentation
 Introduction
 ------------
 
+.. toctree::
+   
+   more
+
 Welcome to the vidme.py documentation!
 
 Vidme.py is an API wrapper for the Vidme API, written in Python.
