@@ -30,7 +30,7 @@ long = '''A python wrapper for the Vidme API
 Currently at the very start'''
 
 setup(name="vidme.py",
-	  version="0.1.0.dev1",
+	  version="0.1.0.dev2",
 	  description="A python wrapper for the Vidme API",
 	  long_description=long,
 	  url="https://github.com/Zakru/vidme.py",
