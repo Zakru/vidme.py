@@ -4,10 +4,10 @@
 API Reference
 =============
 
-The basic usage of vidme.py is documented here.
+The most important classes are documented here
 
 Client
 ------
 
 .. autoclass:: Client
-    :members:
+   :members:

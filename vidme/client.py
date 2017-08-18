@@ -25,11 +25,16 @@ SOFTWARE.
 from . import gateway
 import collections
 
+class ResourceLeakException(Exception):
+	pass
+
 class Client:
 	"""
-	Client is used to interact with the Vidme API in different ways.
-	The Client includes the user ID and the access token used
+	``Client`` is used to interact with the Vidme API in different ways.
+	The ``Client`` contains the user ID and the access token used
 	to identify the application.
+	
+	:param client_id: The OAuth client ID
 	"""
 	authorized = False
 	read_only = False
@@ -37,11 +42,6 @@ class Client:
 	user_id = ""
 	
 	def __init__(self, client_id):
-		"""
-		Initialize the Client
-		
-		:param client_id: The OAuth client ID
-		"""
 		if len(client_id) != 32:
 			raise ValueError("Must provide appropriate OAuth client ID!")
 			return
@@ -49,7 +49,7 @@ class Client:
 	
 	def __del__(self):
 		if self.authorized:
-			raise Exception("Authorization session not closed!")
+			raise ResourceLeakException("Authorization session not closed!")
 	
 	def authorize(self, key_secret, username, password):
 		headers = {"Authorization": key_secret}
@@ -75,7 +75,26 @@ class Client:
 		self.access_token = ""
 		self.user_id = ""
 	
-	def http_get(self, url, *, url_args=[], headers={}, data={}):
+	def http_get(self, url_suffix, *, url_args=[], headers={}, data={}):
+		"""
+		Send an HTTP GET request with the session's AccessToken.
+		
+		Parameters
+		----------
+		url_suffix : str
+		    The URL suffix (without the ``https://api.vid.me/`` prefix).
+		    E.g. use ``notifications`` to send a request to ``https://api.vid.me/notifications``.
+		url_args : Optional[List[str]]
+			Shorthand for using ``format`` for URL arguments (e.g. user id).
+		    
+			.. code-block:: python
+			
+				a = ["1234"]
+				client.http_get("user/{0}", url_args=a)
+		
+		headers : Optional[dict]
+			Contains HTML headers to send with the request (access_token_ automatically included)
+		"""
 		if not self.authorized:
 			raise ValueError("Must be authorized before using API requests from client!")
 			return
@@ -83,9 +102,9 @@ class Client:
 		headers_c = collections.Counter(headers)
 		headers_c.update({"AccessToken": self.access_token})
 		headers_f = dict(headers_c)
-		return gateway.get(url, url_args=url_args, headers=headers_f, data=data)
+		return gateway.get(url_suffix, url_args=url_args, headers=headers_f, data=data)
 	
-	def http_post(self, url, *, url_args=[], headers={}, data={}):
+	def http_post(self, url_suffix, *, url_args=[], headers={}, data={}):
 		if not self.authorized:
 			raise ValueError("Must be authorized before using API requests from client!")
 			return
@@ -96,7 +115,7 @@ class Client:
 		headers_c = collections.Counter(headers)
 		headers_c.update({"AccessToken": self.access_token})
 		headers_f = dict(headers_c)
-		return gateway.post(url, url_args=url_args, headers=headers_f, data=data)
+		return gateway.post(url_suffix, url_args=url_args, headers=headers_f, data=data)
 	
 	def notifications_list(self):
 		if self.read_only:

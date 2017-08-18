@@ -32,7 +32,11 @@ def get(url, *args, **kwargs):
 		url_f = url.format(*(kwargs["url_args"]))
 	
 	kwargs.pop("url_args", None)
-	return requests.get(url_prefix + url_f, *args, **kwargs)
+	try:
+		return requests.get(url_prefix + url_f, *args, **kwargs)
+	except requests.exceptions.ConnectionError:
+		print("No internet connection")
+		exit(1)
 
 def post(url, *args, **kwargs):
 	url_f = url
@@ -40,4 +44,8 @@ def post(url, *args, **kwargs):
 		url_f = url.format(*(kwargs["url_args"]))
 	
 	kwargs.pop("url_args", None)
-	return requests.post(url_prefix + url_f, *args, **kwargs)
+	try:
+		return requests.post(url_prefix + url_f, *args, **kwargs)
+	except requests.exceptions.ConnectionError:
+		print("No internet connection")
+		exit(1)
